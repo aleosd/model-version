@@ -4,6 +4,11 @@
 an instance is updated, its `version` number is incremented and old values are
 copied to a new record, that represents previous version of the current instance.
 
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Disable Versioning](#disable-versioning)
+* [Limitations](#limitations)
+
 ## Installation
 
 To install the library use pip:
@@ -36,6 +41,37 @@ Create and apply migrations with the new fields:
 ```shell
 python ./manage.py makemigration
 python ./manage.py migrate
+```
+
+### Disable versioning
+
+There's a context manager `disabled_versioning` that allows to disable model
+versioning for a specific operation:
+
+```python
+from model_version import disabled_versioning
+from myapp.models import MyModel
+
+record = MyModel.objects.create(name="foo")
+assert record.version == 0
+
+with disabled_versioning():
+    record.name = "bar"
+    record.save()
+    
+assert record.version == 0
+```
+
+Context variable based on `contextvars` is used under the hood. It can be used
+directly to manually manage version creation process:
+
+```python
+from model_version.settings import versioning_is_disabled
+
+
+reset_token = versioning_is_disabled.set(True)
+...  # non-versioned operations go here
+versioning_is_disabled.reset(reset_token)
 ```
 
 ## Limitations

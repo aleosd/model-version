@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
-from .settings import DEFAULT_VERSION
+from .settings import DEFAULT_VERSION, versioning_is_disabled
 
 
 class ModelVersion(models.Model):
@@ -19,12 +19,16 @@ class ModelVersion(models.Model):
         abstract = True
         unique_together = ["version_id", "version"]
 
+    @staticmethod
+    def versioning_enabled() -> bool:
+        return not versioning_is_disabled.get()
+
     def save(self, **kwargs: t.Any) -> None:
         # new record is being created
         if self.version_id is None:
             self.version_id = uuid.uuid4()
         # old record, updating version number
-        elif self.pk is not None:
+        elif self.pk is not None and self.versioning_enabled():
             self._copy_current_instance()
             self._update_version()
         super().save(**kwargs)

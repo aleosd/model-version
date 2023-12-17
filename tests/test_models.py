@@ -2,6 +2,7 @@ import pytest
 from hamcrest import assert_that, equal_to, less_than, not_
 from myapp.models import MyModel
 
+from model_version import disabled_versioning
 from model_version.settings import DEFAULT_VERSION
 
 
@@ -82,3 +83,19 @@ def test__different_record_have_different_version_id():
 
     # then
     assert_that(first_record.version_id, not_(equal_to(second_record.version_id)))
+
+
+@pytest.mark.django_db
+def test__disabled_versioning_context__disables_version_creation(model_instance):
+    # given
+    initial_version = model_instance.version
+    model_instance.name = "bar"
+
+    # when
+    with disabled_versioning():
+        model_instance.save()
+
+    # then
+    assert_that(MyModel.objects.count(), equal_to(1))
+    db_record = MyModel.objects.first()
+    assert_that(db_record.version, equal_to(initial_version))
