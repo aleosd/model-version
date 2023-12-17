@@ -1,7 +1,9 @@
 from contextvars import Token
-from hamcrest import assert_that, is_, is_not, not_none, instance_of
+
+from hamcrest import assert_that, instance_of, is_, not_none
+
+from model_version.settings import versioning_is_disabled
 from model_version.utils import disabled_versioning
-from model_version.constants import versioning_is_disabled
 
 
 def test__disabled_versioning_context__changes_context_variable():

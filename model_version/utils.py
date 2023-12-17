@@ -1,7 +1,7 @@
-from contextvars import Token
 from contextlib import ContextDecorator
+from contextvars import Token
 
-from .constants import versioning_is_disabled
+from .settings import versioning_is_disabled
 
 
 class disabled_versioning(ContextDecorator):

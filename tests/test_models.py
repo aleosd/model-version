@@ -1,9 +1,8 @@
 import pytest
 from hamcrest import assert_that, equal_to, less_than, not_
-
-from model_version import disabled_versioning
 from myapp.models import MyModel
 
+from model_version import disabled_versioning
 from model_version.settings import DEFAULT_VERSION
 
 

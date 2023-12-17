@@ -5,8 +5,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
-from .settings import DEFAULT_VERSION
-from .constants import versioning_is_disabled
+from .settings import DEFAULT_VERSION, versioning_is_disabled
 
 
 class ModelVersion(models.Model):
