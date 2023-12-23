@@ -4,7 +4,7 @@ version = "0.2.0"
 description = "Django model version mixin"
 authors = ["Alex <osdalex@gmail.com>"]
 readme = "README.md"
-license = "GPL-3.0-only"
+license = "Apache-2.0"
 packages = [
     { include = "model_version" }
 ]
