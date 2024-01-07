@@ -23,7 +23,7 @@ class ModelVersion(models.Model):
     def versioning_enabled() -> bool:
         return not versioning_is_disabled.get()
 
-    def save(self, **kwargs: t.Any) -> None:
+    def save(self, *args: t.Any, **kwargs: t.Any) -> None:
         # new record is being created
         if self.version_id is None:
             self.version_id = uuid.uuid4()
@@ -31,7 +31,7 @@ class ModelVersion(models.Model):
         elif self.pk is not None and self.versioning_enabled():
             self._copy_current_instance()
             self._update_version()
-        super().save(**kwargs)
+        super().save(*args, **kwargs)
 
     def _update_version(self) -> None:
         max_available_version = self.__class__.objects.filter(
