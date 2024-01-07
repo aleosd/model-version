@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "model-version"
-version = "0.2.1"
+version = "0.2.2"
 description = "Django model version mixin"
 authors = ["Alex <osdalex@gmail.com>"]
 readme = "README.md"
